@@ -42,7 +42,8 @@ namespace GS.FloppyBirdFantasy2D
 
         public void Reset()
         {
-            
+            BackgroundLoop.Instance.Reset();
+            BackgroundChanger.Instance.ChangeBackground();
         }
 
         

@@ -16,9 +16,11 @@ namespace GS.FloppyBirdFantasy2D
 
         private void Update()
         {
-
-            TouchInput();
-            ButtonInput();
+            if (GameManager.Instance.IsPlaying)
+            {
+                TouchInput();
+                ButtonInput();
+            }
         }
 
         private void FixedUpdate()
@@ -56,7 +58,7 @@ namespace GS.FloppyBirdFantasy2D
 
         private void OnTriggerEnter2D(Collider2D col)
         {
-            if(col.CompareTag("Obstacles"))
+            if (col.CompareTag("Obstacles"))
             {
                 Debug.Log("PILLER HIT");
             }

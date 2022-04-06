@@ -6,14 +6,30 @@ namespace GS.FloppyBirdFantasy2D
 {
     public class BackgroundLoop : MonoBehaviour
     {
+        public static BackgroundLoop Instance { get; private set; }
         public GameObject[] levels;
         private Camera mainCamera;
         private Vector2 screenBounds;
         public float choke;
-        public float scrollSpeed;
+        [HideInInspector] public float scrollSpeed;
+        [SerializeField] private float startScrollSpeed = 10f;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(this.gameObject);
+            }
+            else
+            {
+                Destroy(this);
+            }
+        }
 
         void Start()
         {
+            scrollSpeed = startScrollSpeed;
             mainCamera = gameObject.GetComponent<Camera>();
             screenBounds = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z));
             foreach (GameObject obj in levels)
@@ -74,6 +90,11 @@ namespace GS.FloppyBirdFantasy2D
             {
                 repositionChildObjects(obj);
             }
+        }
+
+        public void Reset()
+        {
+            scrollSpeed = startScrollSpeed;
         }
     }
 }

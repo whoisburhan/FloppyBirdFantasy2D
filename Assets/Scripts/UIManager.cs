@@ -7,20 +7,25 @@ namespace GS.FloppyBirdFantasy2D
 {
     public class UIManager : MonoBehaviour
     {
-        public static UIManager Instance {get;private set;}
+        public static UIManager Instance { get; private set; }
 
         [Header("Canvas Groups")]
+        [SerializeField] private CanvasGroup startMenuCanvasGroup;
         [SerializeField] private CanvasGroup selectBirdMenuCanvasGroup;
 
         [Header("Animators")]
         [SerializeField] private Animator BirdUISelectAnimator;
 
         [Header("Buttons")]
+        [SerializeField] private Button playButtonOne;
+        [SerializeField] private Button playButtonTwo;
+        [SerializeField] private Button selectBirdButton;
+        [SerializeField] private Button rateButton;
         [SerializeField] private Button leftArrowButton;
         [SerializeField] private Button rightArrowButton;
         private void Awake()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = this;
                 DontDestroyOnLoad(this.gameObject);
@@ -35,14 +40,40 @@ namespace GS.FloppyBirdFantasy2D
         {
             ButtonInit();
         }
-        
+
         private void ButtonInit()
         {
-            leftArrowButton.onClick.AddListener(()=>{ LeftArrowButtonFunc();});
-            rightArrowButton.onClick.AddListener(()=>{RightArrowButtonFunc();});
+            selectBirdButton.onClick.AddListener(() =>
+            {
+                DeActivateStartMenu();
+                ActivateSelectBirdMenu();
+            });
+
+            rateButton.onClick.AddListener(() => { });
+
+            leftArrowButton.onClick.AddListener(() => { LeftArrowButtonFunc(); });
+            rightArrowButton.onClick.AddListener(() => { RightArrowButtonFunc(); });
         }
 
-    #region Select Bird
+        #region Start Menu
+
+        public void ActivateStartMenu()
+        {
+            startMenuCanvasGroup.alpha = 1f;
+            startMenuCanvasGroup.blocksRaycasts = true;
+            startMenuCanvasGroup.interactable = true;
+        }
+
+        public void DeActivateStartMenu()
+        {
+            startMenuCanvasGroup.alpha = 0f;
+            startMenuCanvasGroup.blocksRaycasts = false;
+            startMenuCanvasGroup.interactable = false;
+        }
+
+        #endregion
+
+        #region Select Bird
         public void ActivateSelectBirdMenu()
         {
             selectBirdMenuCanvasGroup.alpha = 1f;
@@ -61,7 +92,7 @@ namespace GS.FloppyBirdFantasy2D
 
         public void LeftArrowButtonFunc()
         {
-            if(GameManager.Instance.CurrentlySelectedBirdIndex <= 1)
+            if (GameManager.Instance.CurrentlySelectedBirdIndex <= 1)
             {
                 GameManager.Instance.CurrentlySelectedBirdIndex = 9;
             }
@@ -74,7 +105,7 @@ namespace GS.FloppyBirdFantasy2D
 
         public void RightArrowButtonFunc()
         {
-            if(GameManager.Instance.CurrentlySelectedBirdIndex >= 9)
+            if (GameManager.Instance.CurrentlySelectedBirdIndex >= 9)
             {
                 GameManager.Instance.CurrentlySelectedBirdIndex = 0;
             }
@@ -84,6 +115,17 @@ namespace GS.FloppyBirdFantasy2D
             }
             BirdUISelectAnimator.Play("BirdUI 0" + GameManager.Instance.CurrentlySelectedBirdIndex.ToString());
         }
-    #endregion
+        #endregion
+
+        public void RateUs()
+        {
+            Application.OpenURL("www.google.com");
+        }
+
+        public void Reset()
+        {
+            ActivateStartMenu();
+            DeActivateSelectBirdMenu();
+        }
     }
 }
