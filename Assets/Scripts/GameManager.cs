@@ -7,9 +7,21 @@ namespace GS.FloppyBirdFantasy2D
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance {get;private set;}
-
-        public bool IsPlaying = true;
-
+    
+        [HideInInspector]public bool IsPlaying = true;
+        [SerializeField] private Animator birdAnimator;
+        public int CurrentlySelectedBirdIndex 
+        {
+            get 
+            {
+                return PlayerPrefs.GetInt("SelectedBirdIndex",1);
+            }
+            set
+            {
+                PlayerPrefs.SetInt("SelectedBirdIndex",value);
+                if(birdAnimator != null) birdAnimator.Play("Bird 0" + value.ToString());
+            }
+        }
         private void Awake()
         {
             if(Instance == null)
@@ -21,6 +33,11 @@ namespace GS.FloppyBirdFantasy2D
             {
                 Destroy(this);
             }
+        }
+
+        private void Start()
+        {
+
         }
 
         public void Reset()
