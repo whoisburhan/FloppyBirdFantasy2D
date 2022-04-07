@@ -16,6 +16,11 @@ namespace GS.FloppyBirdFantasy2D
         [Header("Animators")]
         [SerializeField] private Animator BirdUISelectAnimator;
 
+        [Header("Score Text")]
+        [SerializeField] private Text bestScoreText;
+        [SerializeField] private Text lastScoreText;
+        [SerializeField] private Text gameScoreText;
+
         [Header("Buttons")]
         [SerializeField] private Button playButtonOne;
         [SerializeField] private Button playButtonTwo;
@@ -43,6 +48,21 @@ namespace GS.FloppyBirdFantasy2D
 
         private void ButtonInit()
         {
+            playButtonOne.onClick.AddListener(() =>
+            {
+                GameManager.Instance.Play();
+                gameScoreText.transform.parent.gameObject.SetActive(true);
+                DeActivateStartMenu();
+                DeActivateSelectBirdMenu();
+            });
+            playButtonTwo.onClick.AddListener(() =>
+            {
+                GameManager.Instance.Play();
+                gameScoreText.transform.parent.gameObject.SetActive(true);
+                DeActivateStartMenu();
+                DeActivateSelectBirdMenu();
+            });
+
             selectBirdButton.onClick.AddListener(() =>
             {
                 DeActivateStartMenu();
@@ -117,6 +137,24 @@ namespace GS.FloppyBirdFantasy2D
         }
         #endregion
 
+        #region Update Scores In UI
+
+        public void UpdateBestScoreText(int _score)
+        {
+            bestScoreText.text = _score.ToString();
+        }
+
+        public void UpdateLastScoreText(int _score)
+        {
+            lastScoreText.text = _score.ToString();
+        }
+
+        public void UpdateGameScoreText(int _score)
+        {
+            gameScoreText.text = _score.ToString();
+        }
+
+        #endregion
         public void RateUs()
         {
             Application.OpenURL("www.google.com");
@@ -126,6 +164,7 @@ namespace GS.FloppyBirdFantasy2D
         {
             ActivateStartMenu();
             DeActivateSelectBirdMenu();
+            gameScoreText.transform.parent.gameObject.SetActive(false);
         }
     }
 }

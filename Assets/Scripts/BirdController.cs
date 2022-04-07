@@ -20,6 +20,7 @@ namespace GS.FloppyBirdFantasy2D
             {
                 TouchInput();
                 ButtonInput();
+                MouseInput();
             }
         }
 
@@ -56,11 +57,21 @@ namespace GS.FloppyBirdFantasy2D
             }
         }
 
+        private void MouseInput()
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                jump = true;
+            }
+        }
+
         private void OnTriggerEnter2D(Collider2D col)
         {
             if (col.CompareTag("Obstacles"))
             {
-                Debug.Log("PILLER HIT");
+                Debug.Log("<color=red>GameOver</color>");
+                GameManager.Instance.ActiavteDeathEffect();
+                GameManager.Instance.Reset();
             }
         }
     }

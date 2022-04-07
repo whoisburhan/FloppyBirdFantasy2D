@@ -14,6 +14,8 @@ namespace GS.FloppyBirdFantasy2D
         [Header("Piller Gap Offsets")]
         [SerializeField] private float minGapBetweenPillersOffsetInXPos = 2.2f;
         [SerializeField] private float maxGapBetweenPillersOffsetInXPos = 2.8f;
+         [SerializeField] private float minPillerHeightOffset = 1f;
+        [SerializeField] private float maxPillerHeightOffset = 1.35f;
 
         [Header("Piller Objects")]
         [SerializeField] private List<GameObject> TopSidePillers;
@@ -49,7 +51,7 @@ namespace GS.FloppyBirdFantasy2D
             {
                 if(transform.position.x - lastSpawnPosX > gapBetweenPillersOffsetInXPos)
                 {
-                    float pillerHeightY = UnityEngine.Random.Range(1f,1.25f);
+                    float pillerHeightY = UnityEngine.Random.Range(minPillerHeightOffset,maxPillerHeightOffset);
                     //Instantiate Piller
                     if(spawnIndex % 2 == 0) // Activate Top Side Piller
                     {

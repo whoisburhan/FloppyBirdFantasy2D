@@ -11,8 +11,10 @@ namespace GS.FloppyBirdFantasy2D
         private Camera mainCamera;
         private Vector2 screenBounds;
         public float choke;
-        [HideInInspector] public float scrollSpeed;
+         public float scrollSpeed;
         [SerializeField] private float startScrollSpeed = 10f;
+        [SerializeField] private float maxScrollSpeed = 50f;
+        [SerializeField] protected float scrollSpeedModifier = 0.05f;
 
         private void Awake()
         {
@@ -83,6 +85,8 @@ namespace GS.FloppyBirdFantasy2D
             Vector3 smoothPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, 0.3f);
             transform.position = smoothPosition;
 
+            ScrollSpeedUpdate();
+
         }
         void LateUpdate()
         {
@@ -92,6 +96,13 @@ namespace GS.FloppyBirdFantasy2D
             }
         }
 
+        private void ScrollSpeedUpdate()
+        {
+            if(GameManager.Instance.IsPlaying && scrollSpeed < maxScrollSpeed)
+            {
+                scrollSpeed += Time.deltaTime * scrollSpeedModifier;
+            }
+        }
         public void Reset()
         {
             scrollSpeed = startScrollSpeed;
