@@ -6,9 +6,9 @@ namespace GS.FloppyBirdFantasy2D
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance {get;private set;}
-    
-        [HideInInspector] public bool IsPlaying = true;
+        public static GameManager Instance { get; private set; }
+
+        [HideInInspector] public bool IsPlaying = false;
         [SerializeField] private Animator birdAnimator;
 
         [SerializeField] private GameObject bird;
@@ -18,16 +18,16 @@ namespace GS.FloppyBirdFantasy2D
 
         private int score;
         private float floatScore;
-        public int CurrentlySelectedBirdIndex 
+        public int CurrentlySelectedBirdIndex
         {
-            get 
+            get
             {
-                return PlayerPrefs.GetInt("SelectedBirdIndex",1);
+                return PlayerPrefs.GetInt("SelectedBirdIndex", 1);
             }
             set
             {
-                PlayerPrefs.SetInt("SelectedBirdIndex",value);
-                if(birdAnimator != null) birdAnimator.Play("Bird 0" + value.ToString());
+                PlayerPrefs.SetInt("SelectedBirdIndex", value);
+                if (birdAnimator != null) birdAnimator.Play("Bird 0" + value.ToString());
             }
         }
 
@@ -39,7 +39,7 @@ namespace GS.FloppyBirdFantasy2D
             }
             set
             {
-                PlayerPrefs.SetInt("BestScore",value);
+                PlayerPrefs.SetInt("BestScore", value);
             }
         }
 
@@ -47,16 +47,16 @@ namespace GS.FloppyBirdFantasy2D
         {
             get
             {
-                return PlayerPrefs.GetInt("LastScore",0);
+                return PlayerPrefs.GetInt("LastScore", 0);
             }
             set
             {
-                PlayerPrefs.SetInt("LastScore",value);
+                PlayerPrefs.SetInt("LastScore", value);
             }
         }
         private void Awake()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = this;
                 DontDestroyOnLoad(this.gameObject);
@@ -94,7 +94,7 @@ namespace GS.FloppyBirdFantasy2D
 
         public void Play()
         {
-            bird.transform.localPosition = new Vector3(0f,0f,10f);
+            bird.transform.localPosition = new Vector3(0f, 0f, 10f);
             bird.SetActive(true);
             deathEffect.SetActive(false);
             IsPlaying = true;
@@ -103,16 +103,19 @@ namespace GS.FloppyBirdFantasy2D
 
         private void AddScore()
         {
-            floatScore += Time.deltaTime * BackgroundLoop.Instance.scrollSpeed * scoreOffset;
-            score = (int) floatScore;
-            UIManager.Instance.UpdateGameScoreText(score);
+            if (IsPlaying)
+            {
+                floatScore += Time.deltaTime * BackgroundLoop.Instance.scrollSpeed * scoreOffset;
+                score = (int)floatScore;
+                UIManager.Instance.UpdateGameScoreText(score);
+            }
         }
 
         public void ActiavteDeathEffect()
         {
-            deathEffect.transform.position = new Vector3(bird.transform.position.x,bird.transform.position.y,bird.transform.position.z);
+            deathEffect.transform.position = new Vector3(bird.transform.position.x, bird.transform.position.y, bird.transform.position.z);
             deathEffect.SetActive(true);
         }
-        
+
     }
 }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GS.GameKit;
+using DG.Tweening;
 
 namespace GS.FloppyBirdFantasy2D
 {
@@ -54,6 +56,7 @@ namespace GS.FloppyBirdFantasy2D
                 gameScoreText.transform.parent.gameObject.SetActive(true);
                 DeActivateStartMenu();
                 DeActivateSelectBirdMenu();
+                ButtonClickSound();
             });
             playButtonTwo.onClick.AddListener(() =>
             {
@@ -61,18 +64,32 @@ namespace GS.FloppyBirdFantasy2D
                 gameScoreText.transform.parent.gameObject.SetActive(true);
                 DeActivateStartMenu();
                 DeActivateSelectBirdMenu();
+                ButtonClickSound();
             });
 
             selectBirdButton.onClick.AddListener(() =>
             {
                 DeActivateStartMenu();
                 ActivateSelectBirdMenu();
+                ButtonClickSound();
             });
 
-            rateButton.onClick.AddListener(() => { });
+            rateButton.onClick.AddListener(() =>
+            {
+                RateUs();
+                ButtonClickSound();
+            });
 
-            leftArrowButton.onClick.AddListener(() => { LeftArrowButtonFunc(); });
-            rightArrowButton.onClick.AddListener(() => { RightArrowButtonFunc(); });
+            leftArrowButton.onClick.AddListener(() =>
+            {
+                LeftArrowButtonFunc();
+                ButtonClickSound();
+            });
+            rightArrowButton.onClick.AddListener(() =>
+            {
+                RightArrowButtonFunc();
+                ButtonClickSound();
+            });
         }
 
         #region Start Menu
@@ -80,15 +97,21 @@ namespace GS.FloppyBirdFantasy2D
         public void ActivateStartMenu()
         {
             startMenuCanvasGroup.alpha = 1f;
-            startMenuCanvasGroup.blocksRaycasts = true;
-            startMenuCanvasGroup.interactable = true;
+            startMenuCanvasGroup.transform.DOScale(Vector3.one, 0.25f).OnComplete(() =>
+            {
+                startMenuCanvasGroup.blocksRaycasts = true;
+                startMenuCanvasGroup.interactable = true;
+            });
         }
 
         public void DeActivateStartMenu()
         {
-            startMenuCanvasGroup.alpha = 0f;
             startMenuCanvasGroup.blocksRaycasts = false;
             startMenuCanvasGroup.interactable = false;
+            startMenuCanvasGroup.transform.DOScale(Vector3.zero, 0.25f).OnComplete(() =>
+            {
+                startMenuCanvasGroup.alpha = 0f;
+            });
         }
 
         #endregion
@@ -97,17 +120,23 @@ namespace GS.FloppyBirdFantasy2D
         public void ActivateSelectBirdMenu()
         {
             selectBirdMenuCanvasGroup.alpha = 1f;
-            selectBirdMenuCanvasGroup.blocksRaycasts = true;
-            selectBirdMenuCanvasGroup.interactable = true;
+            selectBirdMenuCanvasGroup.transform.DOScale(Vector3.one, 0.5f).OnComplete(() =>
+            {
+                selectBirdMenuCanvasGroup.blocksRaycasts = true;
+                selectBirdMenuCanvasGroup.interactable = true;
+            });
 
             BirdUISelectAnimator.Play("BirdUI 0" + GameManager.Instance.CurrentlySelectedBirdIndex.ToString());
         }
 
         public void DeActivateSelectBirdMenu()
         {
-            selectBirdMenuCanvasGroup.alpha = 0f;
             selectBirdMenuCanvasGroup.blocksRaycasts = false;
             selectBirdMenuCanvasGroup.interactable = false;
+            selectBirdMenuCanvasGroup.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+            {
+                selectBirdMenuCanvasGroup.alpha = 0f;
+            });
         }
 
         public void LeftArrowButtonFunc()
@@ -157,7 +186,12 @@ namespace GS.FloppyBirdFantasy2D
         #endregion
         public void RateUs()
         {
-            Application.OpenURL("www.google.com");
+            Application.OpenURL("https://play.google.com/store/apps/details?id=com.GameSeekersStudio.FloppyBirdFantasy2D");
+        }
+
+        private void ButtonClickSound()
+        {
+            AudioManager.Instance.Play(SoundName.CLICK_4);
         }
 
         public void Reset()

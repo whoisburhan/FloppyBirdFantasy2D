@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GS.GameKit;
 
 namespace GS.FloppyBirdFantasy2D
 {
@@ -31,6 +32,8 @@ namespace GS.FloppyBirdFantasy2D
                 rb2d.velocity = Vector2.zero;
                 rb2d.AddForce(Vector2.up * jumpSpeed);
                 jump = false;
+                
+                AudioManager.Instance.Play(SoundName.CLICK_3);
             }
         }
 
@@ -72,6 +75,8 @@ namespace GS.FloppyBirdFantasy2D
                 Debug.Log("<color=red>GameOver</color>");
                 GameManager.Instance.ActiavteDeathEffect();
                 GameManager.Instance.Reset();
+                AudioManager.Instance.Play(SoundName.GAME_OVER_2);
+                Vibrator.Vibrate();
             }
         }
     }

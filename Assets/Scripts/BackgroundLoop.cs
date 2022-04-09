@@ -12,9 +12,9 @@ namespace GS.FloppyBirdFantasy2D
         private Vector2 screenBounds;
         public float choke;
          public float scrollSpeed;
-        [SerializeField] private float startScrollSpeed = 10f;
-        [SerializeField] private float maxScrollSpeed = 50f;
-        [SerializeField] protected float scrollSpeedModifier = 0.05f;
+        [SerializeField] private float startScrollSpeed = 5f;
+        [SerializeField] private float maxScrollSpeed = 15f;
+        [SerializeField] protected float scrollSpeedModifier = 0.07f;
 
         private void Awake()
         {
